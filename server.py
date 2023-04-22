@@ -14,7 +14,7 @@ def authenticateClient(client_socket):
 
 def handleClient(client_socket):
     # Send a welcome message to the client
-    response = "Hello, client!\nPlease send you login information."
+    response = "Hello, client!\nPlease send your login information."
     client_socket.sendall(response.encode())
     # continually ask the client to authenticate until it authenticates successfully
     while (!authenticateClient()):
