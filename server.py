@@ -18,13 +18,13 @@ def handleClientRequests(clientSocket):
             option = clientSocket.recv(1024)
             match option.decode():
                 case "date":
-                    message = datetime.now.strftime("Date is: %d/%m/%Y")
+                    message = datetime.now().strftime("Date is: %d/%m/%Y \nyou are OK, for asking me 'date, time, capTurkey, quit'")
                     clientSocket.sendall(message.encode())
                 case "time":
-                    message = datetime.now.strftime("Time is: %H:%M:%S")
+                    message = datetime.now().strftime("Time is: %H:%M:%S \nyou are OK, for asking me 'date, time, capTurkey, quit'")
                     clientSocket.sendall(message.encode())
                 case "capTurkey":
-                    message = "The capital of Turkey is Ankara"
+                    message = "The capital of Turkey is Ankara \nyou are OK, for asking me 'date, time, capTurkey, quit'"
                     clientSocket.sendall(message.encode())
                 case "quit":
                     message = "Bye bye."
@@ -32,16 +32,19 @@ def handleClientRequests(clientSocket):
                     break
 
 def handleClient(clientSocket):
-    # Send a welcome message to the client
-    response = "Hello, client!\nPlease send your login information."
-    clientSocket.sendall(response.encode())
-    # continually ask the client to authenticate until it authenticates successfully
-    while (not authenticateClient()):
-        response = "incorrect login information, failed to authenticate, try again."
+    try:
+        # Send a welcome message to the client
+        response = "Hello, client!\nPlease send your login information."
         clientSocket.sendall(response.encode())
-    message = "you are OK, for asking me 'date, time, capTurkey, quit'"
-    clientSocket.sendall(message.encode())
-    handleClientRequests(clientSocket)
+        # continually ask the client to authenticate until it authenticates successfully
+        while (not authenticateClient(clientSocket)):
+            response = "incorrect login information, failed to authenticate, try again."
+            clientSocket.sendall(response.encode())
+        message = "you are OK, for asking me 'date, time, capTurkey, quit'"
+        clientSocket.sendall(message.encode())
+        handleClientRequests(clientSocket)
+    except BrokenPipeError:
+        pass
     clientSocket.close()
 
 # Create a server socket object
@@ -55,5 +58,5 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as serverSocket:
         print(f"Received connection from {clientAddress}")
 
         # Start a new thread to handle the client connection
-        clientThread = threading.Thread(target=handleClient, args=(clientSocket))
+        clientThread = threading.Thread(target=handleClient, args=(clientSocket,))
         clientThread.start()
