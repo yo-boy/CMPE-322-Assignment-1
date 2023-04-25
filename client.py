@@ -32,7 +32,6 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as clientSocket:
 
     print(authenticate(clientSocket, "CMPE322", "bilgiuni"))
 
-
     print(getDate(clientSocket))
     print(getTime(clientSocket))
     print(getCapTurkey(clientSocket))
