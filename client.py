@@ -1,5 +1,4 @@
 import socket
-import time
 
 HOST = "localhost"  # Standard loopback interface address (localhost)
 PORT = 5555 # Port to listen on (non-privileged ports are > 1023), 5555 instead of 555 is just to allow non-privileged execution
@@ -30,7 +29,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as clientSocket:
     clientSocket.connect(ADDRESS)
     print(clientSocket.recv(1024).decode())
     print(authenticate(clientSocket, "CMPE322", "bilgiuniv"))
-    time.sleep(1)
+
     print(authenticate(clientSocket, "CMPE322", "bilgiuni"))
 
 
