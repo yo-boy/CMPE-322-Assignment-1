@@ -49,7 +49,7 @@ def userChoose(socket):
         case "4":
             return quitServer(socket)
         case _:
-            print("enter one of the options")
+            print("\nerror: incorrect input\n")
             return userChoose(socket)
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as clientSocket:
