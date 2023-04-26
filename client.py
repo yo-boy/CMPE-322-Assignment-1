@@ -52,12 +52,15 @@ def userChoose(socket):
             print("\nerror: incorrect input\n")
             return userChoose(socket)
 
-with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as clientSocket:
-    clientSocket.connect(ADDRESS)
-    print(clientSocket.recv(1024).decode())
-    authenticateUser(clientSocket)
-    flag = True
-    while (flag):
-        message = userChoose(clientSocket)
-        flag = message != "Bye bye."
-        print(message)
+def main():
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as clientSocket:
+        clientSocket.connect(ADDRESS)
+        print(clientSocket.recv(1024).decode())
+        authenticateUser(clientSocket)
+        flag = True
+        while (flag):
+            message = userChoose(clientSocket)
+            flag = message != "Bye bye."
+            print(message)
+
+main()
