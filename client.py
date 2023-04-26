@@ -25,12 +25,25 @@ def quitServer(socket):
     socket.sendall("quit".encode())
     return socket.recv(1024).decode()
 
+def getUserInput(socket):
+    user = input("Username: ")
+    password = input("Password: ")
+    return authenticate(socket, user, password)
+
+def authenticateUser(socket):
+    flag = True
+    while (flag):
+        answer = getUserInput(socket)
+        print(answer)
+        flag = (answer != "successfully authenticated\nare OK, for asking me 'date, time, capTurkey, quit'")
+
+
+
+
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as clientSocket:
     clientSocket.connect(ADDRESS)
     print(clientSocket.recv(1024).decode())
-    print(authenticate(clientSocket, "CMPE322", "bilgiuniv"))
-
-    print(authenticate(clientSocket, "CMPE322", "bilgiuni"))
+    authenticateUser(clientSocket)
 
     print(getDate(clientSocket))
     print(getTime(clientSocket))
