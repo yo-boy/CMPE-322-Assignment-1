@@ -40,7 +40,7 @@ def handleClient(clientSocket):
         while (not authenticateClient(clientSocket)):
             response = "incorrect login information, failed to authenticate, try again."
             clientSocket.sendall(response.encode())
-        message = "you are OK, for asking me 'date, time, capTurkey, quit'"
+        message = "successfully authenticated\nyou are OK, for asking me 'date, time, capTurkey, quit'"
         clientSocket.sendall(message.encode())
         handleClientRequests(clientSocket)
     except BrokenPipeError:
