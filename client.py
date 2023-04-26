@@ -35,17 +35,29 @@ def authenticateUser(socket):
     while (flag):
         answer = getUserInput(socket)
         print(answer)
-        flag = (answer != "successfully authenticated\nare OK, for asking me 'date, time, capTurkey, quit'")
+        flag = (answer != "successfully authenticated\nyou are OK, for asking me 'date, time, capTurkey, quit'")
 
-
-
+def userChoose(socket):
+    option = input("1. date\n2. time\n3. capital of Turkey\n4. quit\nEnter the number of an option: ")
+    match option:
+        case "1":
+            return getDate(socket)
+        case "2":
+            return getTime(socket)
+        case "3":
+            return getCapTurkey(socket)
+        case "4":
+            return quitServer(socket)
+        case _:
+            print("enter one of the options")
+            return userChoose(socket)
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as clientSocket:
     clientSocket.connect(ADDRESS)
     print(clientSocket.recv(1024).decode())
     authenticateUser(clientSocket)
-
-    print(getDate(clientSocket))
-    print(getTime(clientSocket))
-    print(getCapTurkey(clientSocket))
-    print(quitServer(clientSocket))
+    flag = True
+    while (flag):
+        message = userChoose(clientSocket)
+        flag = message != "Bye bye."
+        print(message)
