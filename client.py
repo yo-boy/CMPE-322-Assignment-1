@@ -51,6 +51,7 @@ def authenticateUser(socket):
     flag = True
     while (flag):
         answer = getUserInput(socket)
+        clean()
         print(answer)
         flag = (answer != "successfully authenticated\nyou are OK, for asking me 'date, time, capTurkey, quit'")
 
