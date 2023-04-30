@@ -3,7 +3,7 @@ import threading
 from datetime import datetime
 
 HOST = "localhost"  # Standard loopback interface address (localhost)
-PORT = 5555 # Port to listen on (non-privileged ports are > 1023), 5555 instead of 555 is just to allow non-privileged execution
+PORT = 555 # Port to listen on 
 ADDRESS = (HOST, PORT) # handling the address this way is easier
 USERPASS = "CMPE322\0bilgiuni" # we will send user authentication as a null concatenated string
 
@@ -13,6 +13,7 @@ def authenticateClient(clientSocket):
     # return true if the client successfully authenticated
     return data.decode() == USERPASS
 
+# function to handle client requests until the connection is ended
 def handleClientRequests(clientSocket):
     while (True):
             option = clientSocket.recv(1024)
@@ -43,6 +44,7 @@ def handleClient(clientSocket):
         message = "successfully authenticated\nyou are OK, for asking me 'date, time, capTurkey, quit'"
         clientSocket.sendall(message.encode())
         handleClientRequests(clientSocket)
+    # if we encounter the breakage of the pipe we just close the socket and move on
     except BrokenPipeError:
         pass
     clientSocket.close()
@@ -51,7 +53,6 @@ def handleClient(clientSocket):
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as serverSocket:
     serverSocket.bind(ADDRESS)
     serverSocket.listen()
-    #print(serverSocket)
     while (True):
         # Accept a new client connection
         clientSocket, clientAddress = serverSocket.accept()
